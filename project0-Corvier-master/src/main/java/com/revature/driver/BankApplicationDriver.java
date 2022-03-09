@@ -79,12 +79,13 @@ public class BankApplicationDriver {
 		System.out.println("3 - Log in");
 		System.out.println("4 - Checking Account");
 		System.out.println("5 - Savings Account");
+		System.out.println("6 - Logout");
 
 		Scanner sc = new Scanner(System.in);
 
 		int select = sc.nextInt();
 
-		while (select != 1 || select != 2 || select != 3) {
+		while(select <= 6) { //(select != 1 || select != 2 || select != 3) {
 
 			switch (select) {
 			case 1:
@@ -107,6 +108,9 @@ public class BankApplicationDriver {
 			case 5:
 				savingsAccount(accountType, user1, account1);
 				break;
+				
+			case 6:
+				logOut();
 
 			default:
 				System.out.println("Invalid input.  Try again.");
@@ -150,6 +154,8 @@ public class BankApplicationDriver {
 
 		accountType.setType(AccountType.CHECKING);
 
+		System.out.println("Your Checking account has been approved!");
+		System.out.println();
 		System.out.println("*****CHECKING*****");
 		System.out.println("1 - Check your balance");
 		System.out.println("2 - Make a deposit");
@@ -158,9 +164,17 @@ public class BankApplicationDriver {
 
 		int select = sc.nextInt();
 
+		while(select <= 4) {
 		if (select == 1) {
 			System.out.println("balance");
 			System.out.println("Your balance is: " + "$" + balance.getBalance());
+			System.out.println();
+			System.out.println("*****CHECKING*****");
+			System.out.println("1 - Check your balance");
+			System.out.println("2 - Make a deposit");
+			System.out.println("3 - Withdraw");
+			System.out.println("4 - Main Menu");
+			select = sc.nextInt();
 
 		} else if (select == 2) {
 			System.out.println("make deposit");
@@ -171,6 +185,14 @@ public class BankApplicationDriver {
 				balance.setBalance(deposit);
 
 				checkingAccount(accountType, user1, balance);
+				
+				System.out.println();
+				System.out.println("*****CHECKING*****");
+				System.out.println("1 - Check your balance");
+				System.out.println("2 - Make a deposit");
+				System.out.println("3 - Withdraw");
+				System.out.println("4 - Main Menu");
+				select = sc.nextInt();
 
 			}
 			System.out.println("Invalid ammount.  Please try again.");
@@ -190,8 +212,10 @@ public class BankApplicationDriver {
 		else if (select == 4) {
 			mainMenu();
 		}
+		}
 
 		return checkingAccount(balance, user1, balance);
+		
 	}
 
 	// Savings Account
@@ -201,11 +225,14 @@ public class BankApplicationDriver {
 
 		accountType.setType(AccountType.SAVINGS);
 
+		System.out.println("Your Savings account has been approved!");
+		System.out.println();
+		
 		System.out.println("*****SAVINGS*****");
 		System.out.println("1 - Check your balance");
 		System.out.println("2 - Make a deposit");
 		System.out.println("3 - Withdraw");
-		System.out.println("3 - Main Menu");
+		System.out.println("4 - Main Menu");
 
 		int select = sc.nextInt();
 
@@ -369,26 +396,37 @@ public class BankApplicationDriver {
 			System.out.println("You are now logged in");
 		}
 
+		System.out.println("What would you like to do next?");
 		System.out.println();
+		System.out.println("1 - Main Menu");
+//		System.out.println("1 - Apply for a RevBank account");
+//		System.out.println("2 - Register username and pass");
+//		System.out.println("3 - Log in");
+//		System.out.println("4 - Checking Account");
+//		System.out.println("5 - Savings Account");
+//		System.out.println("6 - Log out");
+//		System.out.println();
 
-		System.out.println("1 - Apply for a RevBank account");
-		System.out.println("2 - Register username and pass");
-		System.out.println("3 - Log in");
+//		System.out.println("1 - Apply for a RevBank account");
+//		System.out.println("2 - Register username and pass");
+//		System.out.println("3 - Log in");
 
 		int select = sc.nextInt();
 		switch (select) {
 		case 1:
-			applyForAccount(null, user1);
-			break;
-
-		case 2:
-			registerNamePass(user1, user1.getFirstName(), user1.getLastName(), user1.getUsername(),
-					user1.getPassword());
-			break;
-
-		case 3:
-			userLogIn(user1, userName, userPass);
-			break;
+			mainMenu();
+//		case 1:
+//			applyForAccount(null, user1);
+//			break;
+//
+//		case 2:
+//			registerNamePass(user1, user1.getFirstName(), user1.getLastName(), user1.getUsername(),
+//					user1.getPassword());
+//			break;
+//
+//		case 3:
+//			userLogIn(user1, userName, userPass);
+//			break;
 
 		default:
 			System.out.println("Invalid input.  Try again.");
@@ -396,5 +434,11 @@ public class BankApplicationDriver {
 		}
 
 		return userLogIn(user1, userPass, userPass);
+	}
+	
+	public static void logOut() {
+		System.out.println("Thank you for using RevBank");
+		System.exit(0);
+		
 	}
 }

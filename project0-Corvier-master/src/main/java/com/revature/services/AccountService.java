@@ -4,6 +4,7 @@ import com.revature.beans.Account;
 import com.revature.beans.User;
 import com.revature.dao.AccountDao;
 import com.revature.exceptions.OverdraftException;
+import com.revature.exceptions.UnauthorizedException;
 
 /**
  * This class should contain the business logic for performing operations on Accounts
@@ -12,7 +13,8 @@ public class AccountService {
 	
 	public AccountDao actDao;
 	public static final double STARTING_BALANCE = 25d;
-	
+	AccountService actSrv;
+	Account myAccount = new Account();
 	public AccountService(AccountDao dao) {
 		this.actDao = dao;
 	}
@@ -25,10 +27,10 @@ public class AccountService {
 	 */
 	public void withdraw(Account a, Double amount) {
 		
+		Account myAccount = new Account();
+		myAccount.getBalance();
 		try {
-//			if(amount.a.getTransactions();
-//			if(!a.getBalance().equals(amount)) {
-//			}
+			actSrv.withdraw(myAccount, amount);
 		}
 		catch(OverdraftException x) {
 			System.out.println(x);
@@ -43,8 +45,13 @@ public class AccountService {
 	 * @throws UnsupportedOperationException if amount is negative
 	 */
 	public void deposit(Account a, Double amount) {
+		Account myAccount = new Account();
+		myAccount.getBalance();
 		if (!a.isApproved()) {
 			throw new UnsupportedOperationException();
+		}
+		else {
+			actSrv.deposit(myAccount, amount);
 		}
 	}
 	
@@ -58,15 +65,24 @@ public class AccountService {
 	 * @param amount the monetary value to transfer
 	 */
 	public void transfer(Account fromAct, Account toAct, double amount) {
-		
+		//Account myAccount = new Account();
+		try {
+		actSrv.transfer(fromAct, toAct, amount);
+		}
+		catch(UnsupportedOperationException e) {
+		}	
 	}
+	
 	
 	/**
 	 * Creates a new account for a given User
 	 * @return the Account object that was created
 	 */
 	public Account createNewAccount(User u) {
-		return null;
+		//Account account = new Account();
+		User user = new User();
+		actSrv.createNewAccount(user);
+		return  myAccount;
 	}
 	
 	/**
@@ -77,6 +93,18 @@ public class AccountService {
 	 * @return true if account is approved, or false if unapproved
 	 */
 	public boolean approveOrRejectAccount(Account a, boolean approval) {
-		return false;
+		
+		if(actSrv.approveOrRejectAccount(a, approval) == true) {
+			return true;
+		}
+		
+		if(actSrv.approveOrRejectAccount(a, approval) == false) {
+			return false;
+		}
+		
+		else {
+			throw new UnauthorizedException();
+		}
+
 	}
 }

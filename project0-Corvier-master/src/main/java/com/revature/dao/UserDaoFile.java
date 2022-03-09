@@ -1,5 +1,6 @@
 package com.revature.dao;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,80 +17,70 @@ import com.revature.beans.User;
  * Implementation of UserDAO that reads and writes to a file
  */
 public class UserDaoFile implements UserDao {
-	
-	public static String fileLocation = "C:\\revature\\project0-Corvier-master\\src\\main\\resources";
-	FileInputStream myFileInputStream;
-	FileOutputStream myFileOutputStream;
-	ObjectInputStream myObjectInputStream;
-	ObjectOutputStream myObjectOutputStream;
-	
-	ArrayList<User> userArray = new ArrayList<>();
-	UserDaoFile udf = new UserDaoFile();
-	User user = new User();
-	
-	
-	
+
+	public static String fileLocation = "src\\output\\users.txt";
+	private static File userFile = new File(fileLocation);
+	private static int id = 0;
+	public static List<User> usersList = new ArrayList<User>();
+
 	public User addUser(User user) {
-		// TODO Auto-generated method stub
-		
-		userArray.add(user);
-		
-		try {
-			
-			FileOutputStream fos = new FileOutputStream(fileLocation);
-			ObjectOutputStream oos = new ObjectOutputStream(myFileOutputStream);
-			
-			
-			FileInputStream fis = new FileInputStream(fileLocation);
-			ObjectInputStream ois = new ObjectInputStream(myObjectInputStream);
-			ois.readObject();
+
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(userFile))) {
 			oos.writeObject(user);
-		
-			oos.close();
-		}
-		catch(FileNotFoundException e) {
-			System.out.println(e);	
-		}
-		catch(IOException x) {
-			System.out.println(x);
-		}
-		catch(ClassNotFoundException n) {
-			System.out.println(n);
+			System.out.println("User Successfully Registered!!!");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return user;
 	}
 
-	
 	public User getUser(Integer userId) {
 		// TODO Auto-generated method stub
-
-		for(int i = 0; i < userArray.size(); i++) {
-			if(user.getId().equals(userId)) {
-				return user;
-			}
+		User requestedUser = null;
+		for (User user : usersList) {
+			if (user.getId() == userId)
+				requestedUser = user;
 		}
-		return null;
+		return requestedUser;
 	}
 
 	public User getUser(String username, String pass) {
 		// TODO Auto-generated method stub
-		
-		return null;
+		User requestedUser = null;
+		for (User user : usersList) {
+			if (user.getUsername().equalsIgnoreCase(username) && user.getPassword().equals(pass))
+				requestedUser = user;
+		}
+		return requestedUser;
 	}
 
 	public List<User> getAllUsers() {
 		// TODO Auto-generated method stub
-		return null;
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(userFile))) {
+			do {
+				usersList.add((User) ois.readObject());
+			} while (ois.readObject() != null);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return usersList;
 	}
 
 	public User updateUser(User u) {
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	public boolean removeUser(User u) {
 		// TODO Auto-generated method stub
-		return false;
+		boolean status = false;
+		for (User user : usersList) {
+			if (user.getId() == u.getId())
+				status = usersList.remove(u);
+		}
+		return status;
 	}
 
 }
