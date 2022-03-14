@@ -51,7 +51,7 @@ public class ConnectionUtil {
 	public static Connection getConnection() {
 		// Hint: use the Properties variable to setup your Connection object
 		try {
-			conn = DriverManager.getConnection(url,username,password);
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/p0","root","Alienware*m9750");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

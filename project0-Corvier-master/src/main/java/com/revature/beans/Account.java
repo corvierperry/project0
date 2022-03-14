@@ -118,5 +118,4 @@ public class Account implements Serializable {
 		return "Account [id=" + accountId + ", ownerId=" + ownerId + ", balance=" + balance + ", type=" + type + ", approved="
 				+ approved + ", transactions=" + transactions + "]";
 	}
-	
 }

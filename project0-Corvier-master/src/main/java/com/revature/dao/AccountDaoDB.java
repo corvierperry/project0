@@ -18,25 +18,25 @@ import com.revature.utils.ConnectionUtil;
  */
 public class AccountDaoDB implements AccountDao {
 
-	private static Connection conn;
-	private static Statement stmt; // statement
-	private static PreparedStatement pstmt; // prepared statement
-	private static ResultSet rs;  //result set
+	private static Connection myConnection;
+	private static Statement myStatement; // statement
+	private static PreparedStatement myPreparedStatement; // prepared statement
+	private static ResultSet myResultSet;  //result set
 	
 	public AccountDaoDB() {
-		conn = ConnectionUtil.getConnection();
+		myConnection = ConnectionUtil.getConnection();
 	}
 	
 	public Account addAccount(Account a) {
 		// TODO Auto-generated method stub
-		String query = "insert into myaccounts (ownerId, accountBalance, accountType, approved) values (?,?,?,?)";
+		String query = "insert into p0_user (ownerId, accountBalance, accountType, approved) values (?,?,?,?)";
 		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, a.getOwnerId());
-			pstmt.setDouble(2, a.getBalance());
-			pstmt.setObject(3, a.getType());
-			pstmt.setBoolean(4, a.isApproved());
-			pstmt.executeUpdate();
+			myPreparedStatement =myConnection.prepareStatement(query);
+			myPreparedStatement.setInt(1, a.getOwnerId());
+			myPreparedStatement.setDouble(2, a.getBalance());
+			myPreparedStatement.setObject(3, a.getType());
+			myPreparedStatement.setBoolean(4, a.isApproved());
+			myPreparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,17 +46,17 @@ public class AccountDaoDB implements AccountDao {
 
 	public Account getAccount(Integer actId) {
 		// TODO Auto-generated method stub
-		String query = "select * from myaccounts where accountId="+actId.intValue();
+		String query = "select * from p0_user where accountId="+actId.intValue();
 		Account a = new Account();
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(query);
-			if(rs.next()) {
-				a.setId(rs.getInt("accountId"));
-				a.setOwnerId(rs.getInt("ownerId"));
-				a.setBalance(rs.getDouble("accountBalance"));
-				a.setType((AccountType) rs.getObject("accountType"));
-				a.setApproved(rs.getBoolean("approved"));
+			myStatement = myConnection .createStatement();
+			 myResultSet = myStatement.executeQuery(query);
+			if( myResultSet.next()) {
+				a.setId( myResultSet.getInt("accountId"));
+				a.setOwnerId( myResultSet.getInt("ownerId"));
+				a.setBalance( myResultSet.getDouble("accountBalance"));
+				a.setType((AccountType)  myResultSet.getObject("accountType"));
+				a.setApproved( myResultSet.getBoolean("approved"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -67,18 +67,18 @@ public class AccountDaoDB implements AccountDao {
 
 	public List<Account> getAccounts() {
 		// TODO Auto-generated method stub
-		String query = "select * from myaccounts";
+		String query = "select * from p0_user";
 		List<Account> myAccountList = new ArrayList<>();
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(query);
-			while(rs.next()) {
+			myStatement = myConnection .createStatement();
+			 myResultSet = myStatement.executeQuery(query);
+			while( myResultSet.next()) {
 				Account a = new Account();
-				a.setId(rs.getInt("accountId"));
-				a.setOwnerId(rs.getInt("ownerId"));
-				a.setBalance(rs.getDouble("accountBalance"));
-				a.setType((AccountType) rs.getObject("accountType"));
-				a.setApproved(rs.getBoolean("approved"));
+				a.setId( myResultSet.getInt("accountId"));
+				a.setOwnerId( myResultSet.getInt("ownerId"));
+				a.setBalance( myResultSet.getDouble("accountBalance"));
+				a.setType((AccountType)  myResultSet.getObject("accountType"));
+				a.setApproved( myResultSet.getBoolean("approved"));
 				myAccountList.add(a);
 			}
 		} catch (SQLException e) {
@@ -90,18 +90,18 @@ public class AccountDaoDB implements AccountDao {
 
 	public List<Account> getAccountsByUser(User u) {
 		// TODO Auto-generated method stub
-		String query = "select * from myaccounts where ownerId="+u.getId();
+		String query = "select * from p0_user where ownerId="+u.getId();
 		List<Account> myAccountList = new ArrayList<>();
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(query);
-			while(rs.next()) {
+			myStatement = myConnection .createStatement();
+			 myResultSet = myStatement.executeQuery(query);
+			while( myResultSet.next()) {
 				Account a = new Account();
-				a.setId(rs.getInt("accountId"));
-				a.setOwnerId(rs.getInt("ownerId"));
-				a.setBalance(rs.getDouble("accountBalance"));
-				a.setType((AccountType) rs.getObject("accountType"));
-				a.setApproved(rs.getBoolean("approved"));
+				a.setId( myResultSet.getInt("accountId"));
+				a.setOwnerId( myResultSet.getInt("ownerId"));
+				a.setBalance( myResultSet.getDouble("accountBalance"));
+				a.setType((AccountType)  myResultSet.getObject("accountType"));
+				a.setApproved( myResultSet.getBoolean("approved"));
 				myAccountList.add(a);
 			}
 		} catch (SQLException e) {
